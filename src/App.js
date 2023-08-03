@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Calendar from './components/calendarComponents/Calendar';
-
-
-
-function App() {
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import AppRoutes from './appRoutes';
+import Layout from './Layout';
+const App = () => {
   return (
-    <>
-      <Calendar />
-    </>
-  )
-}
+    <Layout>
+      <Routes>
+        {AppRoutes.map((route, index) => {
+          const { element, ...rest } = route;
+          return <Route key={index} {...rest} element={element} />;
+        })}
+      </Routes>
+    </Layout>
+  );
+};
 
 export default App;

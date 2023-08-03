@@ -10,10 +10,12 @@ function getCurrentWeekDates(today) {
     // Заполняем массив датами текущей недели
     for (let i = 0; i < 7; i++) {
         const date = new Date(startOfWeek.getTime() + i * oneDayMs);
-        const day = date.toLocaleDateString('ru-RU', { weekday: 'long' });
-        const fullDate = date.toLocaleDateString('ru-RU');
-        const currentMonth = date.toLocaleDateString('ru-RU', { month: "long" })
-        weekDates.push({ day, number: date.getDate(), fullDate, currentMonth });
+        const weekday = date.toLocaleDateString('ru-RU', { weekday: 'long' });
+        const day = date.toLocaleDateString('default', { day: '2-digit' });
+        const currentMonth = date.toLocaleDateString('default', { month: "2-digit" })
+        const year = date.toLocaleDateString('default', { year: "numeric" })
+        const fullDate = `${year}-${currentMonth}-${day}`
+        weekDates.push({ weekday, number: date.getDate(), fullDate, currentMonth });
     }
 
     return weekDates;
