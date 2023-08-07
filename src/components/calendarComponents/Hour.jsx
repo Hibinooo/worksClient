@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React  from 'react'
 import { Box, Button } from '@mui/material'
 import { createWork } from '../../http/calendarApi'
 
 const hours = [
     "00", "01", "02", '03', '04', "05", "06", '07', "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"
 ]
-const Hour = ({ date, works, update, selectedTime, times }) => {
-
+const Hour = ({ date, works, selectedTime, times }) => {
+    console.log(works)
     const saveWork = async (hour) => {
         await createWork({
             fullDate: `${date}T${hour}:00:00.000Z`,
             userId: 2,
             timesId: selectedTime.id
-        }).then(update(p => !p))
+        })
     }
 
     return (

@@ -6,20 +6,16 @@ import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import Time from './Time';
 import NewTime from './NewTime';
 import { useEffect } from 'react';
+import { useGetTimesQuery } from '../../store/timesApi';
 const CreateTimes = () => {
-  const [times, setTimes] = React.useState([])
+  
+  const {data=[], isLoading} = useGetTimesQuery(2)
+ 
+
   const [newTimes, setNewTimes] = React.useState([])
   const [count, setCount] = React.useState(0)
 
-  useEffect(() => {
-    const times = async () => {
-      const res = await getTimes(2)
-      setTimes(res)
-    }
-    times()
-  }, [])
-
-  useEffect(() => { console.log(newTimes) }, [newTimes])
+  
   useEffect(() => {
     if (count > 0) {
       setNewTimes(p => [...p, {
@@ -31,17 +27,17 @@ const CreateTimes = () => {
       }])
     }
   }, [count])
-
+  
 
   const deleteTime = (index) => {
     setNewTimes(newTimes.filter((time) => time.index !== index))
-    console.log(newTimes)
   }
-
+  
+  if(isLoading) return <h1>Загрузка</h1>
   return (
     <Container sx={{ textAlign: "center", marginBottom: "60px" }}>
       {
-        times?.map(time => (
+        data?.map(time => (
           <Time key={time.id} time={time} />
         ))
       }

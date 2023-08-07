@@ -1,56 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Button, Typography, Container } from '@mui/material'
 import Hour from './Hour'
-import { getWork } from '../../http/calendarApi'
-import { getTimes } from '../../http/timesApi'
 import currentWeekDate from '../../helpers/currentWeekDate'
 import Header from '../Header'
+import { useGetTimesQuery } from '../../store/timesApi'
+import { useGetWorksQuery } from '../../store/worksApi'
 const Calendar = () => {
 
+    const { data: times = [] } = useGetTimesQuery(2)
+
     const [dayAgo, setDayAgo] = useState(0)
-    const [works, setWorks] = useState([])
-    const [times, setTimes] = useState([])
     const [weekDates, setWeekDates] = useState([])
-    const [update, setUpdate] = useState(true)
     const [selectedTime, setSelectedTime] = useState({})
 
     let today = new Date();
     today = new Date(today.getTime() - dayAgo * 24 * 60 * 60 * 1000);
 
+    const { data: works = [], isLoading } = useGetWorksQuery(
+        {
+            id: 2,
+            startdate: `${weekDates[0]?.fullDate}`,
+            enddate: `${weekDates[weekDates.length - 1]?.fullDate} 24:00:00`
+        },
+        {
+            skip: !weekDates.length > 0,
+
+        })
+
     useEffect(() => {
         setWeekDates(() => currentWeekDate(today))
     }, [dayAgo])
 
-    const getWorks = async () => {
-        const res = await getWork(2, `${weekDates[0]?.fullDate}`, `${weekDates[weekDates.length - 1]?.fullDate} 24:00:00`)
-        setWorks(res)
-    }
-    useEffect(() => {
-        const times = async () => {
-            const res = await getTimes(2)
-            setTimes(res)
-        }
-        if (weekDates.length > 0) {
-            getWorks()
-        }
-        ///times()
-
-    }, [weekDates, update])
-
-    useEffect(() => {
-        const req = async () => {
-            const res = await getTimes(2)
-            setTimes(res)
-        }
-        req()
-    }, [])
-
-
-    useEffect(() => { console.log(weekDates) }, [dayAgo])
+    if (isLoading) return <h1>Загрузка</h1>
 
     return (
         <>
-            <Header setSelected = {setSelectedTime}/>
+            <Header setSelected={setSelectedTime} data={times} />
             <Typography>
                 Выбран {selectedTime.price}
             </Typography>
@@ -66,7 +51,6 @@ const Calendar = () => {
 
             }}>
                 {weekDates?.map((day, i) => (
-                    //i + 1 === today.getDay() ? "red" :
                     <Box key={day.fullDate} sx={{
                         backgroundColor: "white",
                         borderRadius: "10px",
@@ -80,7 +64,7 @@ const Calendar = () => {
                         <Typography sx={{ margin: "5px" }}>
                             {day.number} / {day.weekday} /{day.currentMonth}
                         </Typography>
-                        <Hour date={weekDates[i].fullDate} update={setUpdate} works={works} selectedTime={selectedTime} times={times}/>
+                        <Hour date={weekDates[i].fullDate} works={works} selectedTime={selectedTime} times={times} />
                     </Box>
                 ))}
                 <Button onClick={() => setDayAgo(p => p + 7)}>Назад</Button>
