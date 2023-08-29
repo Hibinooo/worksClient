@@ -1,12 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { apiSlice } from "./slices/apiSlice";
 
-export const worksApi = createApi({
-    reducerPath: 'worksApi',
-    tagTypes: ['works'],
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api/' }),
+export const worksApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         getWorks: build.query({
-            query: ({id, startdate, enddate}) => ({
+            query: ({ id, startdate, enddate }) => ({
                 url: `work`,
                 params: { id, startdate, enddate }
             }),
@@ -20,7 +17,7 @@ export const worksApi = createApi({
         }),
         addWorks: build.mutation({
             query: (body) => ({
-                url: `works`,
+                url: `work`,
                 method: 'POST',
                 body,
             }),
@@ -29,4 +26,4 @@ export const worksApi = createApi({
     }),
 })
 
-export const { useGetWorksQuery, useAddWorksMutation} = worksApi;
+export const { useGetWorksQuery, useAddWorksMutation } = worksApi;

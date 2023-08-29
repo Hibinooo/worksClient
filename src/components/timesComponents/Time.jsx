@@ -3,6 +3,7 @@ import { Paper, Box, Typography, Button, TextField, IconButton } from '@mui/mate
 import { MuiColorInput } from "mui-color-input";
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import { updateTime } from '../../http/timesApi';
+import { useEditTimesMutation } from '../../store/timesApi';
 const Time = ({ time }) => {
 
     const [color, setColor] = React.useState(time.color)
@@ -10,21 +11,24 @@ const Time = ({ time }) => {
     const [price, setPrice] = React.useState(time.price)
     const [disabled, setDisabled] = React.useState(true)
 
-    const handleChange = (color) => {
-        setColor(color)
-    }
+    const [editTimes, { isError, isSuccess }] = useEditTimesMutation()
 
-    const update = async () => {
-        await updateTime({
+
+    const handleEditTimes = async () => {
+        await editTimes({
             id: time.id,
             title: title,
             color: color,
             price: price,
-        })
+        }).unwrap()
+    }
+
+    const handleChange = (color) => {
+        setColor(color)
     }
 
     return (
-        <Paper sx={{ display: "flex", gap: "10px", flexDirection: "column", marginBottom: "20px", boxShadow:`1px 1px 20px -7px ${color}`}}>
+        <Paper sx={{ display: "flex", gap: "10px", flexDirection: "column", marginBottom: "20px", boxShadow: `1px 1px 20px -7px ${color}` }}>
             <Box textAlign={'right'}>
                 {/* <IconButton>
                     <CancelPresentationIcon />
@@ -50,7 +54,7 @@ const Time = ({ time }) => {
             </Box>
             <Button onClick={() => {
                 if (!disabled) {
-                    update()
+                    handleEditTimes()
                         .finally(() => setDisabled(p => !p))
                 }
                 else {

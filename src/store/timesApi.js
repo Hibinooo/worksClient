@@ -1,9 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { apiSlice } from "./slices/apiSlice";
 
-export const timesApi = createApi({
-    reducerPath: 'timesApi',
-    tagTypes: ['times'],
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api/' }),
+export const timesApi = apiSlice.injectEndpoints({
     endpoints: (build) => ({
         getTimes: build.query({
             query: (id) => ({
@@ -24,9 +21,17 @@ export const timesApi = createApi({
                 method: 'POST',
                 body,
             }),
-            invalidatesTags: [{type:"times", id: "LIST"}]
+            invalidatesTags: [{ type: "times", id: "LIST" }]
+        }),
+        editTimes: build.mutation({
+            query: (body) => ({
+                url: 'times',
+                method: 'PATCH',
+                body,
+            }),
+            invalidatesTags: [{ type: "times", id: "LIST" }]
         })
     }),
 })
 
-export const { useGetTimesQuery, useAddTimesMutation } = timesApi;
+export const { useGetTimesQuery, useAddTimesMutation, useEditTimesMutation } = timesApi;

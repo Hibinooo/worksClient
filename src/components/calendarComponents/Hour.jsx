@@ -1,18 +1,22 @@
-import React  from 'react'
+import React from 'react'
 import { Box, Button } from '@mui/material'
 import { createWork } from '../../http/calendarApi'
+import { useAddWorksMutation } from '../../store/worksApi'
 
 const hours = [
     "00", "01", "02", '03', '04', "05", "06", '07', "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"
 ]
 const Hour = ({ date, works, selectedTime, times }) => {
-    console.log(works)
-    const saveWork = async (hour) => {
-        await createWork({
+
+    const [addWorks, { isError, isSuccess }] = useAddWorksMutation()
+
+
+    const handleAddWorks = async (hour) => {
+        await addWorks({
             fullDate: `${date}T${hour}:00:00.000Z`,
             userId: 2,
             timesId: selectedTime.id
-        })
+        }).unwrap()
     }
 
     return (
@@ -31,7 +35,7 @@ const Hour = ({ date, works, selectedTime, times }) => {
                             </Button>
                             :
                             <Button
-                                onClick={() => saveWork(hour)}
+                                onClick={() => handleAddWorks(hour)}
                                 key={hour}
                                 sx={{ backgroundColor: "#f7f7f7" }}
                             >

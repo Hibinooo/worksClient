@@ -21,21 +21,18 @@ const Navigation = () => {
                     label="Времена"
                     value="times"
                     icon={< AddBoxIcon />}
-                    sx={{ color: "#a75a99" }}
                 />
                 <BottomNavigationAction
                     component={Link}
                     to="/"
                     label="Календарь"
                     icon={<TodayIcon />}
-                    sx={{ color: "#a75a99" }}
                 />
                 <BottomNavigationAction
                     component={Link}
                     to="/profile"
                     label="Профиль"
                     icon={<AccountBoxIcon />}
-                    sx={{ color: "#a75a99" }}
                 />
             </BottomNavigation>
         </Paper>

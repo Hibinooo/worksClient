@@ -7,9 +7,9 @@ const Layout = ({ children }) => {
   return (
     <Box sx={{ backgroundColor: 'background.default', minHeight: '100vh' }} >
 
-        <Toolbar />
+        {/* <Toolbar /> */}
         {children}
-      <Navigation />
+      {/* <Navigation /> */}
     </Box>
   );
 };

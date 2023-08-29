@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { timesApi } from './timesApi'
-import { worksApi } from './worksApi'
+import { apiSlice } from './slices/apiSlice'
+import authReducer from './slices/authSlice'
 
 export const store = configureStore({
-    reducer:{
-        [timesApi.reducerPath]: timesApi.reducer,
-        [worksApi.reducerPath]: worksApi.reducer,
+    reducer: {
+        [apiSlice.reducerPath]: apiSlice.reducer,
+        auth: authReducer
     },
-    middleware:(getDefaultMiddlware) => getDefaultMiddlware().concat(timesApi.middleware, worksApi.middleware)
+    middleware: (getDefaultMiddlware) => getDefaultMiddlware().concat(apiSlice.middleware),
+    devTools: true
 })

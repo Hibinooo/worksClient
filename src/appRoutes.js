@@ -3,12 +3,16 @@ import {
     ERROR404,
     INDEX_PATH,
     TIMES_PATH,
-    PROFILE_PATH
+    PROFILE_PATH,
+    LOGIN_PATH,
+    REGISTRATION_PATH
 } from "./routes";
 import Calendar from "./components/calendarComponents/Calendar";
 import CreateTimes from "./components/timesComponents/CreateTimes";
 import Page404 from './helpers/Page404';
 import AuthoСheck from './auth/AuthCheck';
+import Login from './components/loginComponents/Login'
+import Registration from "./components/loginComponents/Registration";
 // import AuthSso from "./http/auth/AuthSso";
 // import AuthCallback from "./http/auth/AuthCallback";
 // import AuthoСheck from "./http/auth/AuthoСheck";
@@ -27,6 +31,20 @@ const AppRoutes = [
         element:
             <AuthoСheck>
                 <CreateTimes />
+            </AuthoСheck>
+    },
+    {
+        path: LOGIN_PATH,
+        element:
+            <AuthoСheck>
+                <Login />
+            </AuthoСheck>
+    },
+    {
+        path: REGISTRATION_PATH,
+        element:
+            <AuthoСheck>
+                <Registration />
             </AuthoСheck>
     },
     // {
