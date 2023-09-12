@@ -1,10 +1,14 @@
-import React  from 'react'
+import React, { FC, useState } from 'react'
 import { AppBar, Box, Button, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import { ITime } from '../types/types';
 
-const Header = ({ setSelected, data }) => {
+interface HeaderProps {
+    setSelected: React.Dispatch<ITime>;
+    data: ITime[]
+}
 
-
-
+const Header: FC<HeaderProps> = (props) => {
+    let { setSelected, data } = props;
     return (
         <AppBar sx={{ minHeight: "5%", backgroundColor: "#a75a99" }}>
             <Accordion>

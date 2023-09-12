@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { Dispatch, FC, SetStateAction } from 'react'
 import { Box, Button, Container, Paper, TextField, Typography, IconButton } from '@mui/material'
 import { MuiColorInput } from "mui-color-input";
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import { useEffect } from 'react';
 import { createTime } from '../../http/timesApi';
 import { useAddTimesMutation } from '../../store/timesApi';
+import { ITime } from '../../types/types';
 
-const NewTime = ({ deleteTime, time, setTimes, id }) => {
+type NewTimeProps = {
+    deleteTime: (index) => void,
+    time: ITime,
+    setTimes: Dispatch<SetStateAction<ITime[]>>,
+}
+
+const NewTime: FC<NewTimeProps> = ({ deleteTime, time, setTimes }) => {
 
     const [addTimes, { isError, isSuccess }] = useAddTimesMutation()
 
@@ -15,10 +22,10 @@ const NewTime = ({ deleteTime, time, setTimes, id }) => {
     const [price, setPrice] = React.useState(0)
     const [disabled, setDisabled] = React.useState(false)
 
-    const handleChange = (color) => {
+    const handleChange = (color: string) => {
         setColor(color)
     }
-    
+
     const handleAddTimes = async () => {
         await addTimes({
             title: title,
@@ -45,7 +52,7 @@ const NewTime = ({ deleteTime, time, setTimes, id }) => {
                 <Typography>
                     Цена
                 </Typography>
-                <TextField placeholder='Цена' disabled={disabled} type="number" sx={{ maxWidth: "50%" }} onChange={(e) => setPrice(e.target.value)} />
+                <TextField placeholder='Цена' disabled={disabled} type="number" sx={{ maxWidth: "50%" }} onChange={(e) => setPrice(parseInt(e.target.value))} />
             </Box>
             <Box sx={{ display: "flex", justifyContent: 'space-between', margin: '0 40px 0 40px' }}>
                 <Typography>
@@ -54,7 +61,7 @@ const NewTime = ({ deleteTime, time, setTimes, id }) => {
                 <MuiColorInput isAlphaHidden disabled={disabled} format="hex" value={color} onChange={handleChange} sx={{ maxWidth: "50%" }} />
             </Box>
             <Button onClick={handleAddTimes}>
-               {disabled ? "Изменить" : "Сохранить"}
+                {disabled ? "Изменить" : "Сохранить"}
             </Button>
         </Paper>
     )

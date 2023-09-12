@@ -1,9 +1,8 @@
 import React from 'react'
 import { Paper, Box, Typography, Button, TextField, IconButton } from '@mui/material'
 import { MuiColorInput } from "mui-color-input";
-import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
-import { updateTime } from '../../http/timesApi';
 import { useEditTimesMutation } from '../../store/timesApi';
+
 const Time = ({ time }) => {
 
     const [color, setColor] = React.useState(time.color)
@@ -23,7 +22,7 @@ const Time = ({ time }) => {
         }).unwrap()
     }
 
-    const handleChange = (color) => {
+    const handleChange = (color: string) => {
         setColor(color)
     }
 
